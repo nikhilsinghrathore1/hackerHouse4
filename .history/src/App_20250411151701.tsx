@@ -23,7 +23,6 @@ export function App() {
   ) {
     const res = await message({
       process: gameProcess,
-      //@ts-ignore
       signer: createDataItemSigner(window.arweaveWallet),
       tags,
       data : JSON.stringify(data),
@@ -104,97 +103,48 @@ export function App() {
     }
   };
 
+  const getLeaderBoard = async () => {
+    try {
+      const result = await dryrun({
+        process: 'E79553cfortLrAzKv122LDUt-1YfVtSUw76kdi8FEjA',
+        data: '',
+        tags: [{ name: 'Action', value: 'LeaderBoard' }]
+      });
 
-  async function dryrunResult(gameProcess: string, tags: { name: string; value: string }[]) {
-    const res = await dryrun({
-      process: gameProcess,
-      tags,
-    }).then((res) => JSON.parse(res.Messages[0].Data))
-  
-    return res
+      const leaderboardData = JSON.parse(result.Messages[0].Data);
+
+      const leaderboardArray = Object.keys(leaderboardData).map(playerId => {
+        const playerStats = leaderboardData[playerId];
+        const kdRatio = playerStats.deaths === 0 ? playerStats.kills : (playerStats.kills / playerStats.deaths).toFixed(2);
+        return { playerId, ...playerStats, kdRatio };
+      });
+
+      const sortedLeaderboard = leaderboardArray.sort((a, b) => b.kdRatio - a.kdRatio);
+
+      console.log('Sorted LeaderBoard:', sortedLeaderboard);
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+    }
+  };
+
+
+  const SedData = async()=>{
+    console.log("message called")
+    const res = await messageResult(
+      pId,
+      [
+        {
+          name: "Action",
+          value: "send-answer",
+        },
+      ],
+      {
+        text:"random data"
+      }
+    );
+    console.log(res.Messages)
   }
 
-
-  const seddata = async () => {
-    console.log("Button clicked");
-
-    // if (currentPlayer) {
-      // console.log("Current player:", currentPlayer);
-
-      // Wait for the player registration message to be sent to the AO process
-      const { Messages} = await messageResult(
-       pId,
-        [
-          {
-            name: "Action",
-            value: "Register-Player",
-          },
-          {
-            name: "DisplayName",
-            value: "name",
-          },
-        ]
-      );
-
-      if (Messages[0].Data === "Successfully registered to game.") {
-       
-
-        //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
-      } else return;
-
-      const userRes = await dryrunResult(pId, [
-        {
-          name: "Action",
-          value: "Update-Score",
-        },
-      ]);
-
-      console.log("Joined users result", userRes);
-      
-  };
-
-  const updateScore = async () => {
-    console.log("score clicked");
-
-    // if (currentPlayer) {
-      // console.log("Current player:", currentPlayer);
-
-      // Wait for the player registration message to be sent to the AO process
-      const { Messages } = await messageResult(
-       pId,
-        [
-          {
-            name: "Action",
-            value: "Update-Score",
-          },
-          {
-            name: "Score",
-            value: "3",
-          },
-        ],
-        "3"
-      );
-
-        console.log(Messages)
-      // if (Messages[0].Data === "Score updated successfully.") {
-       
-
-        //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
-      // } else return;
-
-      const userRes = await dryrunResult(pId, [
-        {
-          name: "Action",
-          value: "Joined-Players",
-        },
-      ]);
-
-      console.log("Joined users result", userRes);
-      
-  };
-
-
- 
   const getCurrentCode = () => {
     if (!selectedProblemId) return "";
     return userCode[selectedProblemId] || selectedProblem?.defaultCode || "";
@@ -233,11 +183,8 @@ export function App() {
   return (
     <>
     
-    <div onClick={seddata}>
+    <div onClick={getLeaderBoard}>
       send msg
-    </div>
-    <div onClick={updateScore}>
-      score msg
     </div>
     <Layout
       sidebar={

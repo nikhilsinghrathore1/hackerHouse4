@@ -23,7 +23,6 @@ export function App() {
   ) {
     const res = await message({
       process: gameProcess,
-      //@ts-ignore
       signer: createDataItemSigner(window.arweaveWallet),
       tags,
       data : JSON.stringify(data),
@@ -103,8 +102,6 @@ export function App() {
       }));
     }
   };
-
-
   async function dryrunResult(gameProcess: string, tags: { name: string; value: string }[]) {
     const res = await dryrun({
       process: gameProcess,
@@ -113,88 +110,41 @@ export function App() {
   
     return res
   }
-
-
-  const seddata = async () => {
-    console.log("Button clicked");
-
-    // if (currentPlayer) {
-      // console.log("Current player:", currentPlayer);
-
-      // Wait for the player registration message to be sent to the AO process
-      const { Messages} = await messageResult(
-       pId,
-        [
-          {
-            name: "Action",
-            value: "Register-Player",
-          },
-          {
-            name: "DisplayName",
-            value: "name",
-          },
-        ]
-      );
-
-      if (Messages[0].Data === "Successfully registered to game.") {
-       
-
-        //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
-      } else return;
-
-      const userRes = await dryrunResult(pId, [
-        {
-          name: "Action",
-          value: "Update-Score",
-        },
-      ]);
-
-      console.log("Joined users result", userRes);
-      
-  };
-
-  const updateScore = async () => {
-    console.log("score clicked");
-
-    // if (currentPlayer) {
-      // console.log("Current player:", currentPlayer);
-
-      // Wait for the player registration message to be sent to the AO process
-      const { Messages } = await messageResult(
-       pId,
-        [
-          {
-            name: "Action",
-            value: "Update-Score",
-          },
-          {
-            name: "Score",
-            value: "3",
-          },
-        ],
-        "3"
-      );
-
-        console.log(Messages)
-      // if (Messages[0].Data === "Score updated successfully.") {
-       
-
-        //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
-      // } else return;
-
-      const userRes = await dryrunResult(pId, [
-        {
-          name: "Action",
-          value: "Joined-Players",
-        },
-      ]);
-
-      console.log("Joined users result", userRes);
-      
-  };
-
-
+  
  
+  const userRes = async () => {
+    const updatedPlayers = await dryrunResult(gameState.gameProcess, [
+      {
+        name: "Action",
+        value: "Joined-Players",
+      },
+    ]);
+
+    console.log("Joined users result in waiting room", updatedPlayers);
+    if (updatedPlayers !== joinedPlayers) {
+      setJoinedPlayers(updatedPlayers);
+    } else console.log("No new players joined");
+  };
+
+
+
+  const SedData = async()=>{
+    console.log("message called")
+    const res = await messageResult(
+      pId,
+      [
+        {
+          name: "Action",
+          value: "send-answer",
+        },
+      ],
+      {
+        text:"random data"
+      }
+    );
+    console.log(res.Messages)
+  }
+
   const getCurrentCode = () => {
     if (!selectedProblemId) return "";
     return userCode[selectedProblemId] || selectedProblem?.defaultCode || "";
@@ -233,11 +183,8 @@ export function App() {
   return (
     <>
     
-    <div onClick={seddata}>
+    <div onClick={SedData}>
       send msg
-    </div>
-    <div onClick={updateScore}>
-      score msg
     </div>
     <Layout
       sidebar={

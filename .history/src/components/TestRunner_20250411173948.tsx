@@ -39,7 +39,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({ problem, userCode, onTes
         // Here we just do some simple checks to simulate code execution
         
         // Check if code contains basic patterns relevant to the problem
-        const passed = simulateCodeExecution(userCode, problem.id);
+        const passed = simulateCodeExecution(userCode, problem.id,);
         
         mockResults.push({
           passed,

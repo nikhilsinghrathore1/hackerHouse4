@@ -122,7 +122,7 @@ export function App() {
       // console.log("Current player:", currentPlayer);
 
       // Wait for the player registration message to be sent to the AO process
-      const { Messages} = await messageResult(
+      const { Messages, Spawns, Output, Error } = await messageResult(
        pId,
         [
           {
@@ -145,13 +145,15 @@ export function App() {
       const userRes = await dryrunResult(pId, [
         {
           name: "Action",
-          value: "Update-Score",
+          value: "Joined-Players",
         },
       ]);
 
       console.log("Joined users result", userRes);
       
   };
+
+
 
   const updateScore = async () => {
     console.log("score clicked");
@@ -160,7 +162,7 @@ export function App() {
       // console.log("Current player:", currentPlayer);
 
       // Wait for the player registration message to be sent to the AO process
-      const { Messages } = await messageResult(
+      const { Messages, Spawns, Output, Error } = await messageResult(
        pId,
         [
           {
@@ -171,8 +173,7 @@ export function App() {
             name: "Score",
             value: "3",
           },
-        ],
-        "3"
+        ]
       );
 
         console.log(Messages)
@@ -180,7 +181,7 @@ export function App() {
        
 
         //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
-      // } else return;
+      } else return;
 
       const userRes = await dryrunResult(pId, [
         {

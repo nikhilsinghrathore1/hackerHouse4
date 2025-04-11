@@ -1,6 +1,4 @@
-import { Problem } from '../types/problem';
-
-export const problems: Problem[] = [
+export const Problems = [
   {
     id: 'sqlite-select-basic',
     title: '1. Basic SELECT Query',

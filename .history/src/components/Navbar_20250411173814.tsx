@@ -38,12 +38,11 @@ export const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
     console.error
   }
  }
-  //  async function getWalletAddress() {
-  //   //@ts-ignore
-  //   const walletAddress = await window.arweaveWallet.getActiveAddress();
-  //   console.log(walletAddress)
-  //   return walletAddress ;
-  // };
+   async function getWalletAddress() {
+    const walletAddress = await window.arweaveWallet.getActiveAddress();
+    console.log(walletAddress)
+    return walletAddress ;
+  };
   
 
   return (

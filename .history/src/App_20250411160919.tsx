@@ -105,7 +105,7 @@ export function App() {
   };
 
 
-  async function dryrunResult(gameProcess: string, tags: { name: string; value: string }[]) {
+  export async function dryrunResult(gameProcess: string, tags: { name: string; value: string }[]) {
     const res = await dryrun({
       process: gameProcess,
       tags,
@@ -122,7 +122,7 @@ export function App() {
       // console.log("Current player:", currentPlayer);
 
       // Wait for the player registration message to be sent to the AO process
-      const { Messages} = await messageResult(
+      const { Messages, Spawns, Output, Error } = await messageResult(
        pId,
         [
           {
@@ -137,50 +137,21 @@ export function App() {
       );
 
       if (Messages[0].Data === "Successfully registered to game.") {
+        toast({
+          title: "Successfully registered.",
+          description: "Waiting for other players to join.",
+        });
+
+        //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
        
+      } else if (Messages[0].Data === "You are already registered.") {
+        toast({
+          title: "Player already registered.",
+          description: "Please wait for other players to join.",
+        });
 
         //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
       } else return;
-
-      const userRes = await dryrunResult(pId, [
-        {
-          name: "Action",
-          value: "Update-Score",
-        },
-      ]);
-
-      console.log("Joined users result", userRes);
-      
-  };
-
-  const updateScore = async () => {
-    console.log("score clicked");
-
-    // if (currentPlayer) {
-      // console.log("Current player:", currentPlayer);
-
-      // Wait for the player registration message to be sent to the AO process
-      const { Messages } = await messageResult(
-       pId,
-        [
-          {
-            name: "Action",
-            value: "Update-Score",
-          },
-          {
-            name: "Score",
-            value: "3",
-          },
-        ],
-        "3"
-      );
-
-        console.log(Messages)
-      // if (Messages[0].Data === "Score updated successfully.") {
-       
-
-        //   setJoinedPlayers([...joinedPlayers, currentPlayer]);
-      // } else return;
 
       const userRes = await dryrunResult(pId, [
         {
@@ -233,11 +204,8 @@ export function App() {
   return (
     <>
     
-    <div onClick={seddata}>
+    <div onClick={getLeaderBoard}>
       send msg
-    </div>
-    <div onClick={updateScore}>
-      score msg
     </div>
     <Layout
       sidebar={

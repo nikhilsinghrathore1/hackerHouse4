@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/codeeditor.tsx","./src/components/layout.tsx","./src/components/navbar.tsx","./src/components/problemlist.tsx","./src/components/problemviewer.tsx","./src/components/testrunner.tsx","./src/data/problems.ts","./src/types/problem.ts"],"version":"5.8.3"}

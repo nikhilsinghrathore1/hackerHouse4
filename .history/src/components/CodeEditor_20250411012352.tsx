@@ -64,6 +64,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         <select 
           className="px-2 py-1 border rounded bg-white text-sm"
           value={language}
+          onChange={(e) => {}}
           disabled // Disabled for MVP
         >
           <option value="javascript">JavaScript</option>

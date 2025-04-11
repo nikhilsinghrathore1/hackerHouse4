@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Navbar } from './Navbar';
 
 type LayoutProps = {

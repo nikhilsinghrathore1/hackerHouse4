@@ -122,7 +122,7 @@ export function App() {
       // console.log("Current player:", currentPlayer);
 
       // Wait for the player registration message to be sent to the AO process
-      const { Messages} = await messageResult(
+      const { Messages, Spawns, Output, Error } = await messageResult(
        pId,
         [
           {
@@ -153,6 +153,8 @@ export function App() {
       
   };
 
+
+
   const updateScore = async () => {
     console.log("score clicked");
 
@@ -160,7 +162,7 @@ export function App() {
       // console.log("Current player:", currentPlayer);
 
       // Wait for the player registration message to be sent to the AO process
-      const { Messages } = await messageResult(
+      const { Messages, Spawns, Output, Error } = await messageResult(
        pId,
         [
           {

@@ -13,13 +13,10 @@ export const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
 
  async function connectWallet() {
   try {
-    //@ts-ignore
     if (!window.arweaveWallet) {
       alert('No Arconnect detected');
       return;
     }
-    
-    //@ts-ignore
     await window.arweaveWallet.connect(
       ['ACCESS_ADDRESS', 'SIGN_TRANSACTION', 'ACCESS_TOKENS'],
       {
@@ -38,12 +35,11 @@ export const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
     console.error
   }
  }
-  //  async function getWalletAddress() {
-  //   //@ts-ignore
-  //   const walletAddress = await window.arweaveWallet.getActiveAddress();
-  //   console.log(walletAddress)
-  //   return walletAddress ;
-  // };
+   async function getWalletAddress() {
+    const walletAddress = await window.arweaveWallet.getActiveAddress();
+    console.log(walletAddress)
+    return walletAddress ;
+  };
   
 
   return (

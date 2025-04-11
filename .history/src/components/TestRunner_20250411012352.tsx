@@ -39,7 +39,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({ problem, userCode, onTes
         // Here we just do some simple checks to simulate code execution
         
         // Check if code contains basic patterns relevant to the problem
-        const passed = simulateCodeExecution(userCode, problem.id);
+        const passed = simulateCodeExecution(userCode, problem.id, example);
         
         mockResults.push({
           passed,
@@ -140,7 +140,7 @@ export const TestRunner: React.FC<TestRunnerProps> = ({ problem, userCode, onTes
 };
 
 // This is a very simple simulation for the MVP
-function simulateCodeExecution(code: string, problemId: string,): boolean {
+function simulateCodeExecution(code: string, problemId: string, example: any): boolean {
   const cleanCode = code.toLowerCase();
   
   // These are very simplified checks just for demonstration purposes
